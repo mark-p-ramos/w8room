@@ -1,2 +1,2 @@
 # w8room
-Simple weightlifting app exploring React, Next.js, Tailwind, shadcn, MongoDB
+simple weightlifting tracking app for toying with react, next.js, &amp; mongo
