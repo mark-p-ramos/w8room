@@ -12,7 +12,6 @@ async function dbConnect() {
   }
 
   await mongoose.connect(uri!, { dbName: db! });
-  // mongoose.connection.useDb(process.env.MONGODB_NAME!);
   return mongoose;
 }
 

@@ -1,35 +1,25 @@
-import dbConnect from '@/lib/db-connect';
 import mongoose, { ObjectId } from 'mongoose';
 import { UserModel } from '@/lib/models/user';
 import { WorkoutModel } from '@/lib/models/workout';
-
-// TEMPORARILY DISABLED: better-auth
-// import { auth } from '@/app/lib/auth';
-
-// export async function GET() {
-//     try {
-//         await dbConnect();
-//     } catch (err) {
-//         const message = err instanceof Error ? err.message : "unknown error";
-//         return Response.json({ 
-//             error: message, 
-//             "mongodb-uri": process.env.MONGODB_URI,
-//         }, { status: 500 });
-//     }
-
-//     return Response.json({ message: "MongoDB connected" });
-// }
+import { auth } from '@/lib/auth';
 
 
 export async function GET() {
-    await dbConnect();
+    // try {
+    //     const user = await UserModel.findOne({ email: 'mark.p.ramos@gmail.com' });
+    //     return Response.json({ user });
+    // } catch (err) {
+    //     const message = err instanceof Error ? err.message : "unknown error";
+    //     return Response.json({ error: message }, { status: 500 });
+    // }
 
     const session = await mongoose.startSession();
 
     try {
-    return await session.withTransaction(() => {
-        return seedDb();
-    });
+        return await session.withTransaction(() => {
+            return seedDb();
+            // return deleteDb();
+        });
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "unknown error";
         return Response.json({ "error": message }, { status: 500 });
@@ -54,30 +44,33 @@ async function deleteDb() {
 }
 
 async function seedUser(): Promise<ObjectId> {
-    let user = await UserModel.findOne({ email: "mark.p.ramos@gmail.com" });
+    const email = "mark.p.ramos@gmail.com";
+    let user = await UserModel.findOne({ email });
     if (user) return user;
-
-    // TEMPORARILY DISABLED: better-auth
-    // const ctx = await auth.$context;
-    // await ctx.internalAdapter.createUser({
-    //   email: "mark.p.ramos@gmail.com",
-    //   password: "lifetimesucks",
-    //   name: "Mark Ramos",
-    //   emailVerified: true,
-    // });
-
-    user = await UserModel.create({
-        email: "mark.p.ramos@gmail.com",
+    
+    const ctx = await auth.$context;
+    await ctx.internalAdapter.createUser({
+        email,
         password: "lifetimesucks",
         name: "Mark Ramos",
+        emailVerified: true,
     });
 
-    // user = await UserModel.findOne({ email: "mark.p.ramos@gmail.com" });
+    // user = await UserModel.create({
+    //     email: "mark.p.ramos@gmail.com",
+    //     password: "lifetimesucks",
+    //     name: "Mark Ramos",
+    // });
+
+    user = await UserModel.findOne({ email });
     return user._id;
 }
 
 async function seedWorkouts(userId: ObjectId) {
-    // TODO: make this re-runnable
+    if (await WorkoutModel.exists({ user: userId })) {
+        return;
+    }
+
     await WorkoutModel.insertMany([
     {
         user: userId,
