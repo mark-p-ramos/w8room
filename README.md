@@ -1,2 +1,2 @@
 # w8room
-Simple weightlifting tracking app to explore React, Next.js, TailwindCSS, & MongoDB.
+Simple web app for tracking weightlifting using React, Next.js, TailwindCSS, MongoDB / Mongoose.
