@@ -5,16 +5,7 @@ import { auth } from '@/lib/auth';
 
 
 export async function GET() {
-    // try {
-    //     const user = await UserModel.findOne({ email: 'mark.p.ramos@gmail.com' });
-    //     return Response.json({ user });
-    // } catch (err) {
-    //     const message = err instanceof Error ? err.message : "unknown error";
-    //     return Response.json({ error: message }, { status: 500 });
-    // }
-
     const session = await mongoose.startSession();
-
     try {
         return await session.withTransaction(() => {
             return seedDb();
@@ -47,23 +38,25 @@ async function seedUser(): Promise<ObjectId> {
     const email = "mark.p.ramos@gmail.com";
     let user = await UserModel.findOne({ email });
     if (user) return user;
-    
+
+    // TODO: need a better way to seed users than calling internalAdapter
     const ctx = await auth.$context;
-    await ctx.internalAdapter.createUser({
+    user = await ctx.internalAdapter.createUser({
         email,
-        password: "lifetimesucks",
         name: "Mark Ramos",
         emailVerified: true,
     });
 
-    // user = await UserModel.create({
-    //     email: "mark.p.ramos@gmail.com",
-    //     password: "lifetimesucks",
-    //     name: "Mark Ramos",
-    // });
+    await ctx.internalAdapter.createAccount({
+      accountId: user.id,       // Often the user ID is used as the account ID for credential provider
+      providerId: "credential", // The specific provider ID (e.g., "credential" for email/password)
+      userId: user.id,          // Link to the newly created user's ID
+      password: await ctx.password.hash("lifetimesucks"), // Store the hashed password
+      email,            // Store the email associated with the account
+    });
+    // TODO: need a better way to seed users than calling internalAdapter
 
-    user = await UserModel.findOne({ email });
-    return user._id;
+    return (await UserModel.findOne({ email })).id;
 }
 
 async function seedWorkouts(userId: ObjectId) {
@@ -72,6 +65,152 @@ async function seedWorkouts(userId: ObjectId) {
     }
 
     await WorkoutModel.insertMany([
+    {
+        user: userId,
+        name: 'Push (heavy)',
+        exercises: [
+        {
+            name: 'Incline Press DB',
+            sets: [
+                { reps: 5, weight: 75 },
+                { reps: 5, weight: 75 },
+                { reps: 6, weight: 75 },
+            ],
+        },
+        {
+            name: 'Seated Overhead Press Bar',
+            sets: [
+                { reps: 13, weight: 105 },
+                { reps: 9, weight: 105 },
+                { reps: 8, weight: 105 },
+            ],
+        },
+        {
+            name: 'Lateral Raise',
+            sets: [
+                { reps: 11, weight: 25 },
+                { reps: 10, weight: 25 },
+                { reps: 9, weight: 25 },
+            ],
+        },
+        {
+            name: 'Skull Crushers EZ Bar',
+            sets: [
+                { reps: 11, weight: 75 },
+                { reps: 8, weight: 75 },
+                { reps: 8, weight: 65 },
+            ],
+        },
+        ],
+        createdAt: new Date('2026-02-03T11:15:00Z'),
+    },
+    {
+        user: userId,
+        name: 'Pull (heavy)',
+        exercises: [
+        {
+            name: 'Pullups',
+            sets: [
+                { reps: 5, weight: 40 },
+                { reps: 5, weight: 40 },
+                { reps: 6, weight: 40 },
+            ],
+        },
+        {
+            name: 'Seated Cable Row',
+            sets: [
+                { reps: 12, weight: 150 },
+                { reps: 10, weight: 150 },
+                { reps: 8, weight: 150 },
+            ],
+        },
+        {
+            name: 'Barbell Curls',
+            sets: [
+                { reps: 10, weight: 65 },
+                { reps: 9, weight: 65 },
+            ],
+        },
+        {
+            name: 'Preacher Curls DB',
+            sets: [
+                { reps: 8, weight: 25 },
+                { reps: 7, weight: 25 },
+            ],
+        },
+        ],
+        createdAt: new Date('2026-02-01T11:30:00Z'),
+    },
+    {
+        user: userId,
+        name: 'Legs (heavy)',
+        exercises: [
+        {
+            name: 'Bulgarian Split Squats DB',
+            sets: [
+                { reps: 4, weight: 62 },
+                { reps: 5, weight: 62 },
+                { reps: 5, weight: 62 },
+            ],
+        },
+        {
+            name: 'Leg Extensions',
+            sets: [
+                { reps: 10, weight: 100 },
+                { reps: 11, weight: 100 },
+                { reps: 11, weight: 100 },
+            ],
+        },
+        {
+            name: 'SLDL',
+            sets: [
+                { reps: 10, weight: 155 },
+                { reps: 10, weight: 165 },
+                { reps: 10, weight: 165 },
+            ],
+        },
+        ],
+        createdAt: new Date('2026-01-30T11:30:00Z'),
+    },
+    {
+        user: userId,
+        name: 'Push',
+        exercises: [
+        {
+            name: 'Incline Press DB',
+            sets: [
+                { reps: 12, weight: 60 },
+                { reps: 9, weight: 60 },
+                { reps: 8, weight: 60 },
+            ],
+        },
+        {
+            name: 'Seated Overhead Press Bar',
+            sets: [
+                { reps: 11, weight: 95 },
+                { reps: 8, weight: 95 },
+                { reps: 8, weight: 95 },
+            ],
+        },
+        {
+            name: 'Lateral Raise',
+            sets: [
+                { reps: 13, weight: 25 },
+                { reps: 10, weight: 25 },
+                { reps: 8, weight: 25 },
+            ],
+        },
+        {
+            name: 'Skull Crushers EZ Bar',
+            sets: [
+                { reps: 14, weight: 65 },
+                { reps: 9, weight: 65 },
+                { reps: 7, weight: 65 },
+            ],
+        },
+        ],
+        createdAt: new Date('2026-01-29T11:30:00Z'),
+    },
     {
         user: userId,
         name: 'Pull',
@@ -113,7 +252,7 @@ async function seedWorkouts(userId: ObjectId) {
             ],
         },
         ],
-        createdAt: new Date('2025-01-27T11:30:00Z'),
+        createdAt: new Date('2026-01-27T11:30:00Z'),
     },
     {
         user: userId,
@@ -152,7 +291,7 @@ async function seedWorkouts(userId: ObjectId) {
             ],
         },
         ],
-        createdAt: new Date('2025-01-26T11:30:00Z'),
+        createdAt: new Date('2026-01-26T11:30:00Z'),
     },
     {
         user: userId,
@@ -191,7 +330,7 @@ async function seedWorkouts(userId: ObjectId) {
             ],
         },
         ],
-        createdAt: new Date('2025-01-24T11:30:00Z'),
+        createdAt: new Date('2026-01-24T11:30:00Z'),
     },
     {
         user: userId,
@@ -228,7 +367,7 @@ async function seedWorkouts(userId: ObjectId) {
             ],
         },
         ],
-        createdAt: new Date('2025-01-23T11:30:00Z'),
+        createdAt: new Date('2026-01-23T11:30:00Z'),
     },
     {
         user: userId,
@@ -267,7 +406,7 @@ async function seedWorkouts(userId: ObjectId) {
             ],
         },
         ],
-        createdAt: new Date('2025-01-21T11:30:00Z'),
+        createdAt: new Date('2026-01-21T11:30:00Z'),
     },
     {
         user: userId,
@@ -298,7 +437,7 @@ async function seedWorkouts(userId: ObjectId) {
             ],
         },
         ],
-        createdAt: new Date('2025-01-17T11:30:00Z'),
+        createdAt: new Date('2026-01-17T11:30:00Z'),
     },
     ], { timestamps: false });
 }

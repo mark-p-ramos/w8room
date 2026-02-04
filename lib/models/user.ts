@@ -1,20 +1,19 @@
-import mongoose, { HydratedDocument, InferSchemaType } from 'mongoose';
+import mongoose, { InferRawDocType, InferHydratedDocType } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const userSchemaDefinition = {
     name: String,
     email: { 
         type: String, 
         required: true,
         unique: true, 
     },
-    password: {
-        type: String,
-        required: true,
-    },
-}, { timestamps: true });
+} as const;
 
-export type User = InferSchemaType<typeof userSchema>;
+export type UserDTO = Omit<InferRawDocType<typeof userSchemaDefinition>, '_id'> & 
+    { _id: string, createdAt: Date };
 
-export type UserDocument = HydratedDocument<User>;
+const userSchema = new mongoose.Schema(userSchemaDefinition, { timestamps: true });
+
+export type User = InferHydratedDocType<typeof userSchema>;
 
 export const UserModel = mongoose.models.User || mongoose.model('User', userSchema);

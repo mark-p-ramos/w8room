@@ -1,6 +1,7 @@
-import mongoose, { HydratedDocument, InferSchemaType } from 'mongoose';
+import mongoose, { InferHydratedDocType, InferRawDocType } from 'mongoose';
 
-const workoutSchema = new mongoose.Schema({
+
+const workoutSchemaDefinition = {
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -34,10 +35,13 @@ const workoutSchema = new mongoose.Schema({
             },
         },
     }],
-}, { timestamps: true });
+} as const;
 
-export type Workout = InferSchemaType<typeof workoutSchema>;
+export type WorkoutDTO = Omit<InferRawDocType<typeof workoutSchemaDefinition>, '_id'>
+    & { _id: string, createdAt: Date };
 
-export type WorkoutDocument = HydratedDocument<Workout>;
+const workoutSchema = new mongoose.Schema(workoutSchemaDefinition, { timestamps: true });
+
+export type Workout = InferHydratedDocType<typeof workoutSchema>;
 
 export const WorkoutModel = mongoose.models.Workout || mongoose.model('Workout', workoutSchema);

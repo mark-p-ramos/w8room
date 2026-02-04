@@ -3,20 +3,24 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
-    // const session = await auth.api.getSession({
-    //     headers: await headers()
-    // })
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
 
-    // // THIS IS NOT SECURE!
-    // // This is the recommended approach to optimistically redirect users
-    // // We recommend handling auth checks in each page/route
-    // if(!session) {
-    //     return NextResponse.redirect(new URL("/login", request.url));
-    // }
+    // THIS IS NOT SECURE!
+    // This is the recommended approach to optimistically redirect users
+    // We recommend handling auth checks in each page/route
+    if (!session) {
+        if (request.url.startsWith('/api/')) {
+            return NextResponse.json("Unauthorized", { status: 401 });
+        }
+        
+        return NextResponse.redirect(new URL("/login", request.url));
+    }
 
     return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!login|api/auth|_next/static|_next/image|favicon.ico|static|.*\\..*).*)'],
+  matcher: ['/((?!seed|login|api/auth|_next/static|_next/image|favicon.ico|static|.*\\..*).*)'],
 };
