@@ -25,7 +25,7 @@ export const auth = betterAuth({
     account: {
         modelName: "accounts",
         accountLinking: {
-            enabled: true, 
+            enabled: true,
         }
     },
 

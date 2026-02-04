@@ -12,6 +12,7 @@ interface CreateWorkoutPageProps {
 
 export function CreateWorkoutPage({ workoutPromise }: CreateWorkoutPageProps) {
     const workout = use(workoutPromise);
+    // TODO: wipe out the reps on all the sets
     const [newWorkout, setNewWorkout] = useState(structuredClone(workout));
 
     function handleExercisesChanged(value: WorkoutDTO['exercises']) {
