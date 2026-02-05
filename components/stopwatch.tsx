@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { PauseIcon, PlayIcon, ReloadIcon } from "@hugeicons/core-free-icons"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useCurrentSetContext } from "@/app/workouts/[id]/create/current-set-context"
 
 interface StopwatchProps {
   autoStart?: boolean
@@ -34,6 +35,7 @@ function Stopwatch({ autoStart = false, className }: StopwatchProps) {
   const [elapsedTime, setElapsedTime] = React.useState(0)
   const [isRunning, setIsRunning] = React.useState(autoStart)
   const startTimeRef = React.useRef<number>(0)
+  const { iCurSet } = useCurrentSetContext();
 
   React.useEffect(() => {
     if (!isRunning) return
@@ -56,6 +58,11 @@ function Stopwatch({ autoStart = false, className }: StopwatchProps) {
     startTimeRef.current = Date.now()
     setIsRunning(true)
   }
+
+  React.useEffect(() => {
+    console.log('reset stopwatch');
+    reset();
+  }, [iCurSet]);
 
   return (
     <div className={cn("flex items-center gap-3", className)}>
