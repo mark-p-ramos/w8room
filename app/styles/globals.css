@@ -124,3 +124,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.link-overlay {
+    @apply absolute inset-0 z-10;
+}
+

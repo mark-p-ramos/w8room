@@ -19,9 +19,7 @@ export function useSwipe({ onSwipeLeft, onSwipeRight }: useSwipeParameters) {
         
         if (deltaX > 50) {
             onSwipeRight?.();
-        }
-
-        if (deltaX < -50) {
+        } else if (deltaX < -50) {
             onSwipeLeft?.();
         }
     }

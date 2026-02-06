@@ -8,8 +8,8 @@ export async function GET() {
     const session = await mongoose.startSession();
     try {
         return await session.withTransaction(() => {
+            deleteDb();
             return seedDb();
-            // return deleteDb();
         });
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "unknown error";

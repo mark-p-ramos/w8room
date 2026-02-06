@@ -1,6 +1,6 @@
 'use client';
 
-import { Stopwatch } from "@/components/stopwatch"
+import { Stopwatch } from "@/app/workouts/stopwatch"
 import { CreateWorkoutExercises } from '@/app/workouts/\[id\]/create/create-workout-exercises';
 import { use, useState } from 'react';
 import { WorkoutDTO } from '@/lib/models/workout';
