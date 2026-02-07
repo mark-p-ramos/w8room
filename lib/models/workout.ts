@@ -1,9 +1,12 @@
-import mongoose, { InferHydratedDocType, InferRawDocType } from 'mongoose';
+import { InferHydratedDocType, InferRawDocType } from 'mongoose';
+import dbConnect from '../db-connect';
 
+
+const mongoose = await dbConnect();
 
 const workoutSchemaDefinition = {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose!.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
@@ -17,12 +20,12 @@ const workoutSchemaDefinition = {
             type: [{
                 reps: {
                     type: Number,
-                    min: 1,
+                    min: 0,
                     required: true,
                 },
                 weight: {
                     type: Number,
-                    min: 1,
+                    min: 0,
                     required: true,
                 },
             }],
@@ -40,8 +43,8 @@ const workoutSchemaDefinition = {
 export type WorkoutDTO = Omit<InferRawDocType<typeof workoutSchemaDefinition>, '_id'>
     & { _id: string, createdAt: Date };
 
-const workoutSchema = new mongoose.Schema(workoutSchemaDefinition, { timestamps: true });
+const workoutSchema = new mongoose!.Schema(workoutSchemaDefinition, { timestamps: true });
 
 export type Workout = InferHydratedDocType<typeof workoutSchema>;
 
-export const WorkoutModel = mongoose.models.Workout || mongoose.model('Workout', workoutSchema);
+export const WorkoutModel = mongoose!.models.Workout || mongoose!.model('Workout', workoutSchema);

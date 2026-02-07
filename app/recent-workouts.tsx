@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { WorkoutDTO } from "@/lib/models/workout";
 import { use } from 'react';
-import WorkoutDate from '@/components/ui/workout-date';
+import WorkoutDate from '@/app/workouts/workout-date';
 import Link from "next/link";
 
 
@@ -15,11 +15,11 @@ export function RecentWorkouts({ recentWorkoutsPromise }: RecentWorkoutsProps) {
     const recentWorkouts = use(recentWorkoutsPromise);
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-3 overflow-y-auto">
             {recentWorkouts.map((workout) => (
                 <Card
                     key={workout._id}
-                    className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                    className="relative p-4 cursor-pointer hover:bg-muted/50 transition-colors"
                 >
                     <Link href={`/workouts/${workout._id}`} className="link-overlay" aria-label={`View details for ${workout.name}`} />
                     <div className="flex items-center justify-between gap-4">

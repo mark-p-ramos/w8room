@@ -1,13 +1,13 @@
 'use client';
 
-import { Stopwatch } from "@/app/workouts/stopwatch"
+import { Stopwatch } from "@/app/workouts/[id]/create/stopwatch"
 import { CreateWorkoutExercises } from '@/app/workouts/\[id\]/create/create-workout-exercises';
 import { use, useState } from 'react';
 import { WorkoutDTO } from '@/lib/models/workout';
-import { WorkoutTemplate, isWorkoutTemplate } from "@/app/workouts/[id]/create/create-workout-template";
+import { WorkoutTemplate, isWorkoutTemplate } from "@/app/workouts/[id]/create/workout-template";
 import { NavBar } from "@/components/ui/nav-bar";
-import { Button } from "@/components/ui/button";
 import { CurrentSetProvider } from "./current-set-context";
+import SaveWorkoutButton from "./save-workout-button";
 
 
 interface CreateWorkoutPageProps {
@@ -32,9 +32,6 @@ function createWorkoutTemplate(workout: WorkoutDTO): WorkoutTemplate {
 
 export function CreateWorkoutPage({ workoutPromise }: CreateWorkoutPageProps) {
     const workout = use(workoutPromise);
-    // TODO: 
-    // 2. remove repsPrev & weightPrev when persisting new workout
-    // should be as simple as casting the thing back to WorkoutDTO
     const [newWorkout, setNewWorkout] = useState(createWorkoutTemplate(workout));
 
     function handleExercisesChanged(value: WorkoutTemplate['exercises']) {
@@ -43,7 +40,7 @@ export function CreateWorkoutPage({ workoutPromise }: CreateWorkoutPageProps) {
 
     return (
         <CurrentSetProvider exercises={newWorkout.exercises}>
-            <div className="flex h-screen flex-col">
+            <div className="flex flex-1 flex-col overflow-hidden p-4 pt-8">
                 <div className="shrink-0 space-y-4 pb-4">
                     <h1 className="text-3xl font-bold text-center">{newWorkout.name}</h1>
                     <div className="flex justify-center">
@@ -51,7 +48,7 @@ export function CreateWorkoutPage({ workoutPromise }: CreateWorkoutPageProps) {
                     </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto">
+                <div className="flex-1 overflow-y-auto pb-20">
                     <CreateWorkoutExercises
                         exercises={newWorkout.exercises}
                         onChange={handleExercisesChanged}
@@ -59,12 +56,7 @@ export function CreateWorkoutPage({ workoutPromise }: CreateWorkoutPageProps) {
                 </div>
             </div>
             <NavBar>
-                <Button
-                    className="flex-1 h-12 text-base font-medium rounded-xl"
-                    variant="default"
-                >
-                    Finish Workout
-                </Button>
+                <SaveWorkoutButton workout={newWorkout} />
             </NavBar>
         </CurrentSetProvider>
     );

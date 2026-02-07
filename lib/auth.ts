@@ -2,12 +2,10 @@ import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { headers } from "next/headers";
-import mongoose from "mongoose";
-import dbConnect from "@/lib/db-connect";
+import { MongoClient } from 'mongodb'
 
 
-await dbConnect();
-const client = mongoose.connection.getClient();
+const client = new MongoClient(process.env.MONGODB_URI!);
 
 export const auth = betterAuth({
     database: mongodbAdapter(client.db(process.env.MONGODB_NAME), { client }),

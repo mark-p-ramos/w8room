@@ -15,17 +15,26 @@ interface WorkoutPageProps {
 export function WorkoutPage({ workoutPromise }: WorkoutPageProps) {
     const workout = use(workoutPromise);
 
+    const formattedDate = new Date(workout.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+
     return (
         <>
-            <h1 className="text-3xl font-bold text-center">{workout.name}</h1>
-            <p className="text-xl font-semibold text-muted-foreground">
-                {new Date(workout.createdAt).toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                })}
-            </p>
-            <WorkoutExercises workout={workout} />
+            <div className="flex flex-1 flex-col overflow-hidden p-4 pt-8">
+                <div className="shrink-0 space-y-4 pb-4">
+                    <h1 className="text-3xl font-bold text-center">{workout.name}</h1>
+                    <p className="text-xl font-semibold text-muted-foreground">
+                        {formattedDate}
+                    </p>
+                </div>
+
+                <div className="flex-1 overflow-y-auto pb-20">
+                    <WorkoutExercises workout={workout} />  
+                </div>
+            </div>
 
             <NavBar>
                 <Button

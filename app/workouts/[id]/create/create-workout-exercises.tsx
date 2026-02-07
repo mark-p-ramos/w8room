@@ -1,7 +1,7 @@
 'use client';
 
 import { CreateWorkoutExercise } from "@/app/workouts/[id]/create/create-workout-exercise";
-import { WorkoutTemplate } from "@/app/workouts/[id]/create/create-workout-template";
+import { WorkoutTemplate } from "@/app/workouts/[id]/create/workout-template";
 
 interface WorkoutExercisesProps {
     exercises: WorkoutTemplate['exercises'],

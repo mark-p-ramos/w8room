@@ -1,12 +1,13 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import { WorkoutTemplate } from "@/app/workouts/[id]/create/create-workout-template";
+import { WorkoutTemplate } from "@/app/workouts/[id]/create/workout-template";
 
 interface CurrentSetContextType {
     iCurExercise: number;
     iCurSet: number;
     nextSet: () => void;
+    nextExercise: () => void;
 }
 
 const CurrentSetContext = createContext<CurrentSetContextType | null>(null);
@@ -23,14 +24,20 @@ export function CurrentSetProvider({ children, exercises }: CurrentSetProviderPr
     function nextSet() {
         if (iCurSet < exercises[iCurExercise].sets.length - 1) {
             setCurSet(iCurSet + 1);
-        } else if (iCurExercise < exercises.length - 1) {
+        } else {
+            nextExercise();
+        }
+    }
+
+    function nextExercise() {
+        if (iCurExercise < exercises.length) {
             setCurExercise(iCurExercise + 1);
             setCurSet(0);
         }
     }
 
     return (
-        <CurrentSetContext.Provider value={{ iCurExercise, iCurSet, nextSet }}>
+        <CurrentSetContext.Provider value={{ iCurExercise, iCurSet, nextSet, nextExercise }}>
             {children}
         </CurrentSetContext.Provider>
     );

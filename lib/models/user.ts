@@ -1,4 +1,8 @@
-import mongoose, { InferRawDocType, InferHydratedDocType } from 'mongoose';
+import { InferRawDocType, InferHydratedDocType } from 'mongoose';
+import dbConnect from '../db-connect';
+
+
+const mongoose = await dbConnect();
 
 const userSchemaDefinition = {
     name: String,
@@ -12,8 +16,8 @@ const userSchemaDefinition = {
 export type UserDTO = Omit<InferRawDocType<typeof userSchemaDefinition>, '_id'> & 
     { _id: string, createdAt: Date };
 
-const userSchema = new mongoose.Schema(userSchemaDefinition, { timestamps: true });
+const userSchema = new mongoose!.Schema(userSchemaDefinition, { timestamps: true });
 
 export type User = InferHydratedDocType<typeof userSchema>;
 
-export const UserModel = mongoose.models.User || mongoose.model('User', userSchema);
+export const UserModel = mongoose!.models.User || mongoose!.model('User', userSchema);

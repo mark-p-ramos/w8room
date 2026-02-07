@@ -3,8 +3,8 @@ import { WorkoutDTO } from "@/lib/models/workout";
 
 type OriginalSet = NonNullable<WorkoutDTO['exercises']>[number]['sets'][number];
 export type SetTemplate = OriginalSet & {
-    repsPrev?: number;
-    weightPrev?: number;
+    repsPrev: number;
+    weightPrev: number;
 };
 
 type OriginalExercise = NonNullable<WorkoutDTO['exercises']>[number];

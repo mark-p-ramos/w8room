@@ -3,7 +3,7 @@
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { MinusSignIcon, PlusSignIcon } from "@hugeicons/core-free-icons";
-import { SetTemplate } from "./create-workout-template";
+import { SetTemplate } from "./workout-template";
 
 interface EditWorkoutExerciseSetProps {
     set: SetTemplate;

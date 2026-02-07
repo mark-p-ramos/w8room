@@ -27,16 +27,21 @@ function ExerciseSkeleton() {
 export function WorkoutPageSkeleton() {
     return (
         <>
-            <div className="flex justify-center">
-                <Skeleton className="h-9 w-48" />
-            </div>
-            <div className="flex justify-center">
-                <Skeleton className="h-7 w-36" />
-            </div>
-            <div className="space-y-4">
-                <ExerciseSkeleton />
-                <ExerciseSkeleton />
-                <ExerciseSkeleton />
+            <div className="flex flex-1 flex-col overflow-hidden p-4 pt-8">
+                <div className="shrink-0 space-y-4 pb-4">
+                    <div className="flex justify-center">
+                        <Skeleton className="h-9 w-48" />
+                    </div>
+                    <Skeleton className="h-7 w-40" />
+                </div>
+
+                <div className="flex-1 overflow-y-auto pb-20">
+                    <div className="space-y-4">
+                        <ExerciseSkeleton />
+                        <ExerciseSkeleton />
+                        <ExerciseSkeleton />
+                    </div>
+                </div>
             </div>
             <NavBar>
                 <Skeleton className="flex-1 h-12 rounded-xl" />
