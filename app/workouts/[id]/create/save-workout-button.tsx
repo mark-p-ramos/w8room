@@ -12,14 +12,11 @@ interface SaveWorkoutButtonProps {
 }
 
 export default function SaveWorkoutButton({ workout }: SaveWorkoutButtonProps) {
-
+    
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState("");
-
     const { iCurExercise } = useCurrentSetContext();
     const isWorkoutDone = iCurExercise >= workout.exercises.length;
-    // const isWorkoutDone = true;
-
 
     function handleClick() {
         startTransition(async () => {

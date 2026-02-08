@@ -1,19 +1,17 @@
 'use server';
 
 import { WorkoutModel, WorkoutDTO } from "@/lib/models/workout";
-import { setTimeout } from "node:timers/promises";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
+import { URLParams } from "@/lib/constants";
 
 
 export async function createWorkout(workout: WorkoutDTO): Promise<string> {
     try {
-        await setTimeout(500);
-
         const user = await getUser();
         await WorkoutModel.create({
             user: user.id,
-            // name: workout.name,
+            name: workout.name,
             exercises: workout.exercises?.map((ex) => ({ 
                 name: ex.name,
                 sets: ex.sets.map((set) => ({
@@ -26,5 +24,5 @@ export async function createWorkout(workout: WorkoutDTO): Promise<string> {
         return err instanceof Error ? err.message : "something went wrong";
     }
 
-    redirect('/');
+    redirect(`/?${URLParams.WORKOUT_SAVED}`);
 }
