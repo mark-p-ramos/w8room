@@ -36,11 +36,11 @@ export function EditWorkoutExerciseSet({ set, onChange }: EditWorkoutExerciseSet
                         </InputGroupButton>
                     </InputGroupAddon>
                     <InputGroupInput
-                        type="number"
-                        min={1}
-                        max={20}
+                        type="text"
+                        inputMode="numeric"
                         value={set.reps}
                         onChange={(e) => handleRepsChange(parseInt(e.target.value) || 1)}
+                        onFocus={(e) => e.target.select()}
                         className="w-10 text-center text-foreground"
                     />
                     <InputGroupAddon align="inline-end" className="md:hidden pr-0.5">
@@ -58,10 +58,11 @@ export function EditWorkoutExerciseSet({ set, onChange }: EditWorkoutExerciseSet
             <span className="text-muted-foreground">×</span>
             <InputGroup className="w-auto">
                 <InputGroupInput
-                    type="number"
-                    min={1}
+                    type="text"
+                    inputMode="numeric"
                     value={set.weight}
-                    onChange={(e) => handleWeightChange(parseInt(e.target.value) || 1)}
+                    onChange={(e) => handleWeightChange(parseInt(e.target.value.replace(/^0+/, '')) || 0)}
+                    onFocus={(e) => e.target.select()}
                     className="w-14 text-center text-foreground"
                 />
                 <InputGroupAddon align="inline-end" className="pr-2">
