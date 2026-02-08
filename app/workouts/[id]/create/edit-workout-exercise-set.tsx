@@ -11,7 +11,7 @@ interface EditWorkoutExerciseSetProps {
 }
 
 export function EditWorkoutExerciseSet({ set, onChange }: EditWorkoutExerciseSetProps) {
-
+    
     function handleRepsChange(value: number) {
         const clamped = Math.min(20, Math.max(1, value));
         onChange({ ...set, reps: clamped });
@@ -25,7 +25,7 @@ export function EditWorkoutExerciseSet({ set, onChange }: EditWorkoutExerciseSet
         <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
                 <InputGroup className="w-auto">
-                    <InputGroupAddon align="inline-start" className="md:hidden pl-0.5">
+                    <InputGroupAddon align="inline-start" className="pl-0.5">
                         <InputGroupButton
                             variant="ghost"
                             size="icon-xs"
@@ -37,13 +37,13 @@ export function EditWorkoutExerciseSet({ set, onChange }: EditWorkoutExerciseSet
                     </InputGroupAddon>
                     <InputGroupInput
                         type="text"
-                        inputMode="numeric"
+                        inputMode="none"
+                        readOnly
                         value={set.reps}
                         onChange={(e) => handleRepsChange(parseInt(e.target.value) || 1)}
-                        onFocus={(e) => e.target.select()}
                         className="w-10 text-center text-foreground"
                     />
-                    <InputGroupAddon align="inline-end" className="md:hidden pr-0.5">
+                    <InputGroupAddon align="inline-end" className="pr-0.5">
                         <InputGroupButton
                             variant="ghost"
                             size="icon-xs"
