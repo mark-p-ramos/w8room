@@ -12,7 +12,7 @@ interface SaveWorkoutButtonProps {
 }
 
 export default function SaveWorkoutButton({ workout }: SaveWorkoutButtonProps) {
-    
+
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState("");
     const { iCurExercise } = useCurrentSetContext();
@@ -25,10 +25,10 @@ export default function SaveWorkoutButton({ workout }: SaveWorkoutButtonProps) {
     }
 
     return (
-        <div className="flex-1 flex flex-col items-center gap-2">
+        <>
             {error && <span className="text-sm text-destructive">{error}</span>}
             <Button
-                className="w-full h-12 text-base font-medium rounded-xl"
+                className="flex-1 h-12 text-base font-medium rounded-xl"
                 variant="default"
                 disabled={!isWorkoutDone || isPending}
                 onClick={handleClick}
@@ -36,6 +36,6 @@ export default function SaveWorkoutButton({ workout }: SaveWorkoutButtonProps) {
                 {isPending && <HugeiconsIcon icon={Loading03Icon} className="animate-spin" />}
                 {error ? "Try Again" : "Save Workout"}
             </Button>
-        </div>
+        </>
     );
 }
