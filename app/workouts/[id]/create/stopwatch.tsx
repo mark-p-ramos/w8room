@@ -65,9 +65,6 @@ function Stopwatch({ autoStart = false, className }: StopwatchProps) {
 
     return (
         <div className={cn("flex items-center gap-3", className)}>
-            <span className="font-mono text-4xl font-semibold tabular-nums">
-                {formatTime(elapsedTime)}
-            </span>
             <div className="flex gap-1">
                 {isRunning ? (
                     <Button variant="ghost" size="icon-sm" onClick={pause}>
@@ -78,6 +75,11 @@ function Stopwatch({ autoStart = false, className }: StopwatchProps) {
                         <HugeiconsIcon icon={PlayIcon} size={16} />
                     </Button>
                 )}
+            </div>
+            <span className="font-mono text-4xl font-semibold tabular-nums">
+                {formatTime(elapsedTime)}
+            </span>
+            <div className="flex gap-1">
                 <Button variant="ghost" size="icon-sm" onClick={reset}>
                     <HugeiconsIcon icon={ReloadIcon} size={16} />
                 </Button>
