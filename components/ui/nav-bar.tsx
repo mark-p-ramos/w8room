@@ -1,5 +1,5 @@
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Dumbbell02Icon, EquipmentGym03Icon } from "@hugeicons/core-free-icons";
+import { EquipmentGym03Icon } from "@hugeicons/core-free-icons";
 
 export function NavBar({
   children,
