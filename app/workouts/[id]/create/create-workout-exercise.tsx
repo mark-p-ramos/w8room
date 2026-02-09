@@ -18,10 +18,9 @@ export function CreateWorkoutExercise({ exercise, exerciseIndex, onChange }: Cre
     const { iCurSet, iCurExercise, nextSet, nextExercise } = useCurrentSetContext();
     const isEditing = exerciseIndex === iCurExercise;
 
-    function handleSwipeLeft() {
+    function handleSwipeRight() {
         if (!isEditing) return;
 
-        console.log('next exercise');
         const newExercise = { ...exercise };
         for (let i = iCurSet; i < exercise.sets.length; i++) {
             newExercise.sets[i].reps = 0;
@@ -31,8 +30,7 @@ export function CreateWorkoutExercise({ exercise, exerciseIndex, onChange }: Cre
         nextExercise();
     }
 
-    const { handleTouchStart, handleTouchEnd } = useSwipe({ onSwipeRight: handleSwipeLeft });
-
+    const { handleTouchStart, handleTouchEnd } = useSwipe({ onSwipeRight: handleSwipeRight });
     
 
     function handleSetChange(setIndex: number, updatedSet: SetTemplate) {
