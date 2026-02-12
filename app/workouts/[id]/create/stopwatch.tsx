@@ -76,7 +76,7 @@ function Stopwatch({ autoStart = false, className }: StopwatchProps) {
                     </Button>
                 )}
             </div>
-            <span className="font-mono text-4xl font-semibold tabular-nums">
+            <span className="font-mono text-6xl font-semibold tabular-nums">
                 {formatTime(elapsedTime)}
             </span>
             <div className="flex gap-1">
