@@ -2,10 +2,22 @@ interface WorkoutDateProps {
     date: Date,
 }
 
-function isToday(date: Date) {
+function isToday(date: Date): boolean {
   const today = new Date();
   return date.toDateString() === today.toDateString();
 };
+
+function isYesterday(date: Date): boolean {
+    const yesterday = new Date();
+
+    // Subtract one day from the current date to get yesterday's date.
+    // JavaScript's Date object automatically handles month and year changes.
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Compare the date portions (year, month, day) by converting both 
+    // dates to a human-readable date string, which ignores the time.
+    return date.toDateString() === yesterday.toDateString();
+}
 
 function isDateWithinSixDays(dateToCheck: Date): boolean {
   const now = new Date();
@@ -14,13 +26,16 @@ function isDateWithinSixDays(dateToCheck: Date): boolean {
   // Calculate the time difference in milliseconds
   // Math.abs() handles both future and past dates within the range
   const timeDifference = Math.abs(dateToCheck.getTime() - now.getTime());
-
   return timeDifference <= sevenDaysInMilliseconds;
 }
 
 function formatDate(date: Date): string {
     if (isToday(date)) {
         return "Today";
+    }
+
+    if (isYesterday(date)) {
+        return "Yesterday";
     }
 
     if (isDateWithinSixDays(date)) {
@@ -36,6 +51,7 @@ function formatDate(date: Date): string {
 
 export default function WorkoutDate({ date }: WorkoutDateProps) {
     // today: today
+    // yesterday: yesterday
     // within 6 days: day name only
     // everything after: full date
 
